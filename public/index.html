@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/gh/smx-m14/js@main/jquery.js">
+    </script>
+    <script src="script.js"></script>
+    <title>Shogi Online</title>
+    <style>
+        .tablero {
+            display: grid;
+            grid-template-columns: repeat(9, 60px);
+            gap: 2px;
+            background: #8B4513;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .casilla {
+            width: 60px;
+            height: 60px;
+            background: #DEB887;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .acciones {
+            margin-bottom: 20px;
+        }
+
+        button,
+        input {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Shogi Online</h1>
+    <div id="contenedor-partida">
+        <!-- Controles para crear y unirse a partidas -->
+        <div class="acciones">
+            <button onclick="crearPartida()">Crear partida</button>
+            <input type="text" id="id-partida" placeholder="ID Partida">
+            <button onclick="unirsePartida()">Unirse</button>
+        </div>
+
+        <!-- Tablero del juego -->
+        <div id="tablero" class="tablero"></div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        let idPartidaActual;
+
+        function renderizarTablero(tablero) {
+            const contenedor = document.getElementById('tablero');
+            contenedor.innerHTML = '';
+
+            tablero.forEach((fila, y) => {
+                fila.forEach((pieza, x) => {
+                    const casilla = document.createElement('div');
+                    casilla.className = 'casilla';
+                    casilla.dataset.pos = `${x},${y}`;
+                    casilla.textContent = pieza;
+                    casilla.addEventListener('click', manejarClick);
+                    contenedor.appendChild(casilla);
+                });
+            });
+        }
+
+        function manejarClick(e) {
+            const posicion = e.target.dataset.pos.split(',').map(Number);
+            // Lógica de selección y movimiento
+        }
+
+        function crearPartida() {
+            idPartidaActual = Date.now().toString();
+            socket.emit('nueva-partida', idPartidaActual);
+        }
+
+        function unirsePartida() {
+            const id = document.getElementById('id-partida').value;
+            socket.emit('unirse-partida', id);
+        }
+
+        socket.on('inicio-juego', renderizarTablero);
+        socket.on('actualizar-tablero', ({ desde, hacia }) => {
+            // Actualizar interfaz gráfica
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,35 @@
+body {
+    align-items: center;
+}
+
+table#table{
+    background-color: #edc580;
+    border-collapse: collapse;
+    width: 800px;
+    height: 800PX;
+    margin: 0 auto;
+}
+
+.head td {
+    text-align: center;
+}
+td.comp {
+    width: 10px;
+    text-align: center;
+}
+
+td {
+    width: 10%;
+    height: 10%;
+    border: 2px dotted black;
+}
+
+.background {
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.peon {
+    background-image: url(../img/peones.png);
+}
